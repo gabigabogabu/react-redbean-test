@@ -1,0 +1,10 @@
+FROM node:15.10 as builder
+WORKDIR /usr/app
+COPY . .
+RUN npm i \
+  && CI=true npm test \
+  && npm run build --prod
+
+FROM nginx:1.19.7
+
+COPY --from=builder /usr/app/build/  /usr/share/nginx/html

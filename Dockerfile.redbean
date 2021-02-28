@@ -1,0 +1,16 @@
+FROM node:15.10 as builder
+WORKDIR /usr/app
+COPY . .
+RUN npm i \
+  && CI=true npm test \
+  && npm run build --prod
+RUN apt-get update \
+  && apt-get install zip -y \
+  && mv redbean.com build/ \
+  && cd build \
+  && zip -r redbean.com *
+
+FROM alpine:3.13.2
+EXPOSE 8080
+COPY --from=builder /usr/app/build/redbean.com .
+CMD ./redbean.com -vv

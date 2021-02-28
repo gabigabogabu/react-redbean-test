@@ -1,0 +1,14 @@
+version: "3.9"
+services: 
+  redbean:
+    build: 
+      context: .
+      dockerfile: Dockerfile.redbean
+    ports:
+      - 8080:8080
+  nginx:
+    build: 
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+      - 80:80
